@@ -188,29 +188,39 @@ h1{font-size:clamp(28px,7.6vw,38px);line-height:1.1;font-weight:800;letter-spaci
     vdl.hidden=false;
   }
 
-  /* Share sheet only where it reliably offers the image (not iOS: Safari drops "Save Image" for shared files). */
+  /* Save = the system share sheet with the one-pager image (Save Image / Save to Photos lives there).
+     The file is fetched up front so share() runs inside the tap. */
   var canShareFiles=false;
-  try{canShareFiles=!isIOS&&!!(navigator.canShare&&navigator.canShare({files:[new File([new Blob(['x'])],'x.png',{type:'image/png'})]}))}catch(e){}
-  if(canShareFiles){
-    vshare.hidden=false;
-    vshare.addEventListener('click',function(){
-      fetch(IMG).then(function(r){return r.blob()}).then(function(b){
-        return navigator.share({files:[new File([b],'Opsify-One-Pager.png',{type:'image/png'})]});
-      }).catch(function(){});
+  try{canShareFiles=!!(navigator.canShare&&navigator.canShare({files:[new File([new Blob(['x'])],'x.png',{type:'image/png'})]}))}catch(e){}
+  var filePromise=null;
+  function getFile(){
+    if(!filePromise){filePromise=fetch(IMG).then(function(r){if(!r.ok)throw new Error('fetch');return r.blob()}).then(function(b){return new File([b],'Opsify-One-Pager.png',{type:'image/png'})});filePromise.catch(function(){filePromise=null})}
+    return filePromise;
+  }
+  if(canShareFiles){getFile()}
+
+  function openViewer(){viewer.hidden=false;document.documentElement.classList.add('locked');}
+  function closeViewer(){viewer.hidden=true;document.documentElement.classList.remove('locked');}
+
+  function save(){
+    if(!canShareFiles){openViewer();return}
+    getFile().then(function(file){
+      return navigator.share({files:[file]});
+    }).catch(function(e){
+      if(e&&e.name==='AbortError')return;   /* they closed the sheet */
+      openViewer();                          /* share refused: show the image to press and hold */
     });
   }
-
-  function open(){viewer.hidden=false;document.documentElement.classList.add('locked');}
-  function close(){viewer.hidden=true;document.documentElement.classList.remove('locked');}
-  Array.prototype.forEach.call(document.querySelectorAll('.js-save'),function(b){b.addEventListener('click',open)});
-  document.getElementById('vclose').addEventListener('click',close);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!viewer.hidden)close()});
+  Array.prototype.forEach.call(document.querySelectorAll('.js-save'),function(b){b.addEventListener('click',save)});
+  if(canShareFiles){vshare.hidden=false;vshare.addEventListener('click',save)}
+  document.getElementById('vclose').addEventListener('click',closeViewer);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!viewer.hidden)closeViewer()});
 
   moreBtn.addEventListener('click',function(){
     more.hidden=false;moreBtn.hidden=true;
     try{more.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}
   });
-  if(location.hash==='#save'){open()}
+  if(location.hash==='#save'){openViewer()}
   if(location.hash==='#more'){more.hidden=false;moreBtn.hidden=true}
 })();
 </script>

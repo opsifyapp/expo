@@ -12,19 +12,21 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preload" as="image" href="opsify-one-pager.png">
 <style>
 @font-face{font-family:"Inter";font-weight:300 800;font-style:normal;font-display:swap;src:url("fonts/inter-var-latin.woff2") format("woff2")}
 @font-face{font-family:"Montserrat";font-weight:800;font-style:normal;font-display:swap;src:url("fonts/montserrat-800-latin.woff2") format("woff2")}
 :root{
   color-scheme:light;
   --paper:#ffffff; --ground:#f3f5f9; --ink:#16202e; --blue:#2563eb; --blue-deep:#1d4ed8;
-  --muted:#5b6b80; --faint:#8fa0b5; --line:#d8e0ec; --tint:#eef4fe; --green:#16a34a;
+  --muted:#5b6b80; --faint:#8fa0b5; --line:#d8e0ec; --tint:#eef4fe; --green:#16a34a; --dark:#0e1520;
   --font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --wordmark:"Montserrat","Inter",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ground)}
 body{font-family:var(--font);color:var(--ink);background:var(--ground);line-height:1.5;font-size:16px;-webkit-font-smoothing:antialiased;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+html.locked,html.locked body{overflow:hidden;height:100%}
 a{color:var(--blue-deep)}
 .wrap{max-width:640px;margin:0 auto;padding-inline:20px}
 .page{background:var(--paper)}
@@ -37,11 +39,12 @@ h1{font-size:clamp(27px,7.2vw,36px);line-height:1.1;font-weight:800;letter-spaci
 h1 .second{display:block;color:var(--blue)}
 .sub{margin-top:12px;font-size:17px;font-weight:700;letter-spacing:-.005em}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:14px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;line-height:1.1}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:14px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;line-height:1.1;color:inherit}
 .btn svg{width:18px;height:18px;flex:none}
 .btn-primary{background:var(--blue);color:#fff}
 .btn-primary:active{background:var(--blue-deep)}
 .btn-secondary{background:var(--tint);color:var(--blue-deep)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff}
 .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .hint{margin-top:10px;font-size:13.5px;color:var(--muted)}
 .hint b{color:var(--ink)}
@@ -93,9 +96,19 @@ section{padding-top:26px}
 .bar .inner{max-width:640px;margin:0 auto;display:flex;gap:10px}
 .bar .btn{flex:1;justify-content:center}
 @media (min-width:760px){.bar{display:none}body{padding-bottom:40px}}
-.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;padding:10px 14px;border-radius:10px;max-width:calc(100% - 40px);text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.toast.show{opacity:1}
-@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+/* full-screen viewer: the image people press and hold */
+.viewer{position:fixed;inset:0;z-index:50;background:var(--dark);color:#fff;display:flex;flex-direction:column}
+.viewer[hidden]{display:none}
+.viewer .vtop{padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(14,21,32,.96);border-bottom:1px solid rgba(255,255,255,.1)}
+.viewer .vtop .t{font-size:15px;line-height:1.35}
+.viewer .vtop .t b{font-weight:700;color:#fff}
+.viewer .vtop .t span{color:#a8b5c7}
+.viewer .vbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:14px 12px 20px}
+.viewer .vbody img{display:block;width:100%;max-width:720px;height:auto;margin:0 auto;border-radius:6px;background:#fff}
+.viewer .vfoot{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;background:rgba(14,21,32,.96);border-top:1px solid rgba(255,255,255,.1)}
+.viewer .vfoot .btn{flex:1;justify-content:center}
+.viewer .vfoot .btn-primary{background:#fff;color:var(--ink)}
+.step{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:800;margin-right:6px;flex:none}
 </style>
 </head>
 <body>
@@ -116,7 +129,7 @@ section{padding-top:26px}
     </button>
     <a class="btn btn-secondary" href="Opsify-One-Pager.pdf">PDF</a>
   </div>
-  <p class="hint" id="hint">Opens your share sheet. Choose <b>Save Image</b>.</p>
+  <p class="hint" id="hint">Opens the one-pager full screen. <b>Press and hold</b> it, then tap <b>Add to Photos</b>.</p>
 
   <p class="lead"><b>Built with marine service shops in Annapolis.</b> Opsify is the simple job hub for marine service businesses. Employees log time, parts and photos on a phone app they will actually use. Customers see where their boat stands. Invoices go out through the QuickBooks the shop already runs on, and we move each shop's customers, boats, parts and history over for them.</p>
   <p class="seeit"><a href="https://opsifyapp.com/marine">See it at opsifyapp.com/marine</a></p>
@@ -201,30 +214,61 @@ section{padding-top:26px}
     </button>
   </div>
 </div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-label="Save the one-pager">
+  <div class="vtop">
+    <div class="t" id="vhint"><b>Press and hold the image</b><span>, then tap <b>Add to Photos</b>.</span></div>
+  </div>
+  <div class="vbody"><img src="opsify-one-pager.png" alt="Opsify one-pager" id="vimg"></div>
+  <div class="vfoot">
+    <a class="btn btn-ghost" id="vdl" href="opsify-one-pager.png" download="Opsify-One-Pager.png" hidden>Download</a>
+    <button class="btn btn-ghost" type="button" id="vshare" hidden>Share</button>
+    <button class="btn btn-primary" type="button" id="vclose">Read the one-pager</button>
+  </div>
+</div>
 
 <script>
 (function(){
   var IMG='opsify-one-pager.png';
-  var toast=document.getElementById('toast'), hint=document.getElementById('hint'), t;
-  function say(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(t);t=setTimeout(function(){toast.classList.remove('show')},4500)}
+  var ua=navigator.userAgent||'';
+  var isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var isAndroid=/Android/i.test(ua);
+  var isPhone=isIOS||isAndroid||/Mobi/i.test(ua);
+  var viewer=document.getElementById('viewer'),vhint=document.getElementById('vhint'),vdl=document.getElementById('vdl'),vshare=document.getElementById('vshare'),hint=document.getElementById('hint');
+
+  if(isIOS){
+    vhint.innerHTML='<b>Press and hold the image</b><span>, then tap <b>Add to Photos</b>.</span>';
+    hint.innerHTML='Opens the one-pager full screen. <b>Press and hold</b> it, then tap <b>Add to Photos</b>.';
+  }else if(isAndroid){
+    vhint.innerHTML='<b>Press and hold the image</b><span>, then tap <b>Download image</b>.</span>';
+    hint.innerHTML='Opens the one-pager full screen. <b>Press and hold</b> it, then tap <b>Download image</b>.';
+    vdl.hidden=false;
+  }else{
+    vhint.innerHTML='<b>Right-click the image</b><span> and choose <b>Save Image As</b>, or use Download.</span>';
+    hint.innerHTML='Opens the one-pager full screen with a download button.';
+    vdl.hidden=false;
+  }
+
+  /* Share sheet only where it reliably offers the image (not iOS: Safari drops "Save Image" for shared files). */
   var canShareFiles=false;
-  try{canShareFiles=!!(navigator.canShare&&navigator.canShare({files:[new File([new Blob(['x'])],'x.png',{type:'image/png'})]}))}catch(e){}
-  if(!canShareFiles){hint.innerHTML='Opens the image. <b>Press and hold</b> it, then choose <b>Add to Photos</b> (or right-click to save on a computer).'}
-  var blobPromise=null;
-  function getFile(){
-    if(!blobPromise){blobPromise=fetch(IMG).then(function(r){if(!r.ok)throw new Error('fetch');return r.blob()}).then(function(b){return new File([b],'Opsify-One-Pager.png',{type:'image/png'})})}
-    return blobPromise;
+  try{canShareFiles=!isIOS&&!!(navigator.canShare&&navigator.canShare({files:[new File([new Blob(['x'])],'x.png',{type:'image/png'})]}))}catch(e){}
+  if(canShareFiles){
+    vshare.hidden=false;
+    vshare.addEventListener('click',function(){
+      fetch(IMG).then(function(r){return r.blob()}).then(function(b){
+        return navigator.share({files:[new File([b],'Opsify-One-Pager.png',{type:'image/png'})]});
+      }).catch(function(){});
+    });
   }
-  if(canShareFiles){getFile().catch(function(){})}
-  function openImage(){window.location.href=IMG}
-  function save(){
-    if(!canShareFiles){openImage();return}
-    getFile().then(function(file){
-      return navigator.share({files:[file],title:'Opsify one-pager'}).then(function(){say('Saved. Check Photos.')}).catch(function(e){if(e&&e.name==='AbortError')return;openImage()});
-    }).catch(openImage);
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('.js-save'),function(b){b.addEventListener('click',save)});
+
+  function open(){viewer.hidden=false;document.documentElement.classList.add('locked');}
+  function close(){viewer.hidden=true;document.documentElement.classList.remove('locked');if(location.hash==='#save'){try{history.replaceState(null,'',location.pathname)}catch(e){}}}
+  Array.prototype.forEach.call(document.querySelectorAll('.js-save'),function(b){b.addEventListener('click',open)});
+  document.getElementById('vclose').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!viewer.hidden)close()});
+
+  /* On a phone, open the one-pager right away so the first thing people see is the sheet and how to save it. */
+  if(isPhone||location.hash==='#save'){open()}
 })();
 </script>
 </body>

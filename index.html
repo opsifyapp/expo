@@ -25,21 +25,23 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ground)}
-body{font-family:var(--font);color:var(--ink);background:var(--ground);line-height:1.5;font-size:16px;-webkit-font-smoothing:antialiased;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body{font-family:var(--font);color:var(--ink);background:var(--ground);line-height:1.5;font-size:16px;-webkit-font-smoothing:antialiased;min-height:100%}
 html.locked,html.locked body{overflow:hidden;height:100%}
 a{color:var(--blue-deep)}
 .wrap{max-width:640px;margin:0 auto;padding-inline:20px}
-.page{background:var(--paper)}
+.page{background:var(--paper);min-height:100vh;min-height:100dvh}
 .hd{display:flex;align-items:center;justify-content:space-between;padding:18px 0 14px;border-bottom:2px solid var(--ink)}
 .lockup{display:flex;align-items:center;gap:10px;text-decoration:none}
 .lockup img{width:30px;height:30px;border-radius:7px;display:block}
 .wordmark{font-family:var(--wordmark);font-weight:800;font-size:19px;letter-spacing:.02em;color:var(--blue);line-height:1}
 .hd .url{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
-h1{font-size:clamp(27px,7.2vw,36px);line-height:1.1;font-weight:800;letter-spacing:-.022em;text-wrap:balance;padding-top:22px}
+h1{font-size:clamp(27px,7.2vw,36px);line-height:1.1;font-weight:800;letter-spacing:-.022em;text-wrap:balance;padding-top:24px}
 h1 .second{display:block;color:var(--blue)}
-.sub{margin-top:12px;font-size:17px;font-weight:700;letter-spacing:-.005em}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:14px 18px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;line-height:1.1;color:inherit}
+.intro{margin-top:16px;font-size:17px;line-height:1.55}
+.intro b{font-weight:700}
+.actions{display:grid;gap:10px;margin-top:22px}
+@media (min-width:480px){.actions{grid-template-columns:1fr 1fr}}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:16px;border-radius:12px;padding:15px 18px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;line-height:1.1;color:inherit}
 .btn svg{width:18px;height:18px;flex:none}
 .btn-primary{background:var(--blue);color:#fff}
 .btn-primary:active{background:var(--blue-deep)}
@@ -48,12 +50,15 @@ h1 .second{display:block;color:var(--blue)}
 .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .hint{margin-top:10px;font-size:13.5px;color:var(--muted)}
 .hint b{color:var(--ink)}
-.lead{margin-top:22px;font-size:16.5px;line-height:1.55}
-.lead b{font-weight:700}
-.seeit{margin-top:10px;font-size:15px;font-weight:600}
+.contact{margin-top:26px;padding:18px 0 28px;border-top:1px solid var(--line);font-size:14.5px;color:var(--muted)}
+.contact b{color:var(--ink);font-weight:700}
+.contact a{text-decoration:none;font-weight:600}
+.contact .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:4px}
+/* more info */
+.more[hidden]{display:none}
+.more{padding-top:6px}
 section{padding-top:26px}
 .lbl{font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
-/* work order card */
 .card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(22,32,46,.05),0 10px 24px rgba(22,32,46,.09)}
 .card .top{background:var(--ink);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .card .top .wo{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#a8b5c7}
@@ -72,7 +77,6 @@ section{padding-top:26px}
 .how p{margin-bottom:12px}
 .how p:last-child{margin-bottom:0}
 .how b{font-weight:700}
-/* stats */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;padding-top:18px;border-top:2px solid var(--ink)}
 .stat .n{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1;font-variant-numeric:tabular-nums}
 .stat .n small{font-size:17px;font-weight:700;letter-spacing:0}
@@ -85,17 +89,8 @@ section{padding-top:26px}
 .next .small{font-size:14px;font-weight:600;color:var(--muted);margin-top:6px;margin-bottom:12px}
 .next p{font-size:15px;line-height:1.5;margin-top:8px}
 .next b{font-weight:700}
-.contact{margin-top:28px;padding:20px 0 28px;border-top:1px solid var(--line)}
-.contact .name{font-weight:700;font-size:17px}
-.contact .role{color:var(--muted);font-size:14px;margin-top:2px}
-.contact ul{list-style:none;margin-top:12px;display:grid;gap:8px}
-.contact li a{font-size:16px;font-weight:600;text-decoration:none;color:var(--blue-deep)}
-.contact .loc{margin-top:12px;font-size:14px;color:var(--muted)}
-/* sticky save bar on phones */
-.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-top:1px solid var(--line);padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px))}
-.bar .inner{max-width:640px;margin:0 auto;display:flex;gap:10px}
-.bar .btn{flex:1;justify-content:center}
-@media (min-width:760px){.bar{display:none}body{padding-bottom:40px}}
+.more .again{margin-top:26px;display:grid;gap:10px}
+@media (min-width:480px){.more .again{grid-template-columns:1fr 1fr}}
 /* full-screen viewer: the image people press and hold */
 .viewer{position:fixed;inset:0;z-index:50;background:var(--dark);color:#fff;display:flex;flex-direction:column}
 .viewer[hidden]{display:none}
@@ -106,9 +101,8 @@ section{padding-top:26px}
 .viewer .vbody{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:14px 12px 20px}
 .viewer .vbody img{display:block;width:100%;max-width:720px;height:auto;margin:0 auto;border-radius:6px;background:#fff}
 .viewer .vfoot{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;background:rgba(14,21,32,.96);border-top:1px solid rgba(255,255,255,.1)}
-.viewer .vfoot .btn{flex:1;justify-content:center}
+.viewer .vfoot .btn{flex:1}
 .viewer .vfoot .btn-primary{background:#fff;color:var(--ink)}
-.step{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:800;margin-right:6px;flex:none}
 </style>
 </head>
 <body>
@@ -120,99 +114,94 @@ section{padding-top:26px}
   </header>
 
   <h1>Marine service shops still run on texts and a whiteboard.<span class="second">Opsify puts every job in one place.</span></h1>
-  <p class="sub">Work orders, parts, labor hours and customer updates, from first call to paid invoice.</p>
+  <p class="intro"><b>Opsify is the simple job hub for marine service businesses.</b> Work orders, parts, labor hours and customer updates in one place, beside the QuickBooks the shop already uses. Built with marine service shops in Annapolis.</p>
 
   <div class="actions">
     <button class="btn btn-primary js-save" type="button" id="save-top">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
-      Save the one-pager to Photos
+      Save one-pager to Photos
     </button>
-    <a class="btn btn-secondary" href="Opsify-One-Pager.pdf">PDF</a>
+    <button class="btn btn-secondary" type="button" id="more-btn">Read more</button>
   </div>
   <p class="hint" id="hint">Opens the one-pager full screen. <b>Press and hold</b> it, then tap <b>Add to Photos</b>.</p>
 
-  <p class="lead"><b>Built with marine service shops in Annapolis.</b> Opsify is the simple job hub for marine service businesses. Employees log time, parts and photos on a phone app they will actually use. Customers see where their boat stands. Invoices go out through the QuickBooks the shop already runs on, and we move each shop's customers, boats, parts and history over for them.</p>
-  <p class="seeit"><a href="https://opsifyapp.com/marine">See it at opsifyapp.com/marine</a></p>
-
-  <section>
-    <div class="lbl">One job in Opsify</div>
-    <div class="card">
-      <div class="top">
-        <div>
-          <div class="wo">Work order 2041</div>
-          <div class="boat">Sea Ray 270 Sundancer</div>
-          <div class="job">Winterize and shrink wrap &middot; Slip C-14</div>
+  <div class="more" id="more" hidden>
+    <section>
+      <div class="lbl">One job in Opsify</div>
+      <div class="card">
+        <div class="top">
+          <div>
+            <div class="wo">Work order 2041</div>
+            <div class="boat">Sea Ray 270 Sundancer</div>
+            <div class="job">Winterize and shrink wrap &middot; Slip C-14</div>
+          </div>
+          <span class="pill">In progress</span>
         </div>
-        <span class="pill">In progress</span>
+        <div class="rows">
+          <div class="row"><div class="k">Estimate</div><div class="v"><b>$1,840</b> <span class="m">approved by the customer</span></div></div>
+          <div class="row"><div class="k">Labor</div><div class="v"><b>4.5 hrs &middot; 3 photos</b> <span class="m">logged by Mike R.</span></div></div>
+          <div class="row"><div class="k">Parts</div><div class="v"><b>Antifreeze, impeller kit</b> <span class="m">on the invoice</span></div></div>
+          <div class="row"><div class="k">Customer</div><div class="v">&ldquo;Wrap on Thursday.&rdquo; <span class="ok">Reviewed and sent</span></div></div>
+        </div>
+        <div class="ft"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.6 9.9 17.5 19 7.2"/></svg>Invoice synced to QuickBooks</div>
       </div>
-      <div class="rows">
-        <div class="row"><div class="k">Estimate</div><div class="v"><b>$1,840</b> <span class="m">approved by the customer</span></div></div>
-        <div class="row"><div class="k">Labor</div><div class="v"><b>4.5 hrs &middot; 3 photos</b> <span class="m">logged by Mike R.</span></div></div>
-        <div class="row"><div class="k">Parts</div><div class="v"><b>Antifreeze, impeller kit</b> <span class="m">on the invoice</span></div></div>
-        <div class="row"><div class="k">Customer</div><div class="v">&ldquo;Wrap on Thursday.&rdquo; <span class="ok">Reviewed and sent</span></div></div>
+    </section>
+
+    <section class="how">
+      <div class="lbl">How shops use it</div>
+      <p><b>Nothing slips.</b> Requests, estimates, parts and work orders live in one place, and parts carry through to the invoice.</p>
+      <p><b>Every hour counts.</b> Employees log time, parts and photos on a phone app built for boats, so billing matches the work.</p>
+      <p><b>Customers in the loop.</b> Customers see status, photos and job history. The shop reviews every update before it goes out.</p>
+      <p><b>Works with QuickBooks.</b> Invoices keep going out the way they do now. Setup and migration are done with the shop.</p>
+      <p><a href="https://opsifyapp.com/marine">See it at opsifyapp.com/marine</a></p>
+    </section>
+
+    <section>
+      <div class="stats">
+        <div class="stat"><div class="n">6</div><div class="d">marine service shops on the platform, with more in trials</div></div>
+        <div class="stat"><div class="n">130<small>+</small></div><div class="d">shop conversations, 25 discovery interviews, 14 demos</div></div>
+        <div class="stat"><div class="n">30,000</div><div class="d">U.S. marine service businesses, repair shops to canvas shops</div></div>
+        <div class="stat"><div class="n">$39.5<small>B</small></div><div class="d">U.S. boat dealer and repair shop revenue a year (IBISWorld)</div></div>
       </div>
-      <div class="ft"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.6 9.9 17.5 19 7.2"/></svg>Invoice synced to QuickBooks</div>
-    </div>
-  </section>
+    </section>
 
-  <section class="how">
-    <div class="lbl">How shops use it</div>
-    <p><b>Nothing slips.</b> Requests, estimates, parts and work orders live in one place, and parts carry through to the invoice.</p>
-    <p><b>Every hour counts.</b> Employees log time, parts and photos on a phone app built for boats, so billing matches the work.</p>
-    <p><b>Customers in the loop.</b> Customers see status, photos and job history. The shop reviews every update before it goes out.</p>
-    <p><b>Works with QuickBooks.</b> Invoices keep going out the way they do now. Setup and migration are done with the shop.</p>
-  </section>
+    <section class="cols">
+      <div class="col">
+        <div class="lbl">Why now</div>
+        <p>Several shops in discovery said no software vendor had ever contacted them. Ten had dropped or resented a tool built for plumbers, auto shops or marinas. Many are booked 4 to 8 weeks out, growing, and spending 20 to 80 hours a week on admin.</p>
+      </div>
+      <div class="col">
+        <div class="lbl">The business</div>
+        <p>Monthly subscription per location, $100 to $300 a month by team size, QuickBooks included. Marine is the beachhead. Discovery found the same pain in landscaping, pool service and home repair, and a second vertical follows two marine case studies.</p>
+      </div>
+      <div class="col">
+        <div class="lbl">Team</div>
+        <p>John Gonsalves (founder and CEO) grew up around marine service and ran a marine detailing company in Annapolis for 4.5 years. Jesse Washburn (co-founder and CTO) brings years of production software engineering experience and has founded and exited a startup. TEDCO Pava LaPere Innovation Award recipient.</p>
+      </div>
+    </section>
 
-  <section>
-    <div class="stats">
-      <div class="stat"><div class="n">8</div><div class="d">marine service shops on the platform, with more in trials</div></div>
-      <div class="stat"><div class="n">130<small>+</small></div><div class="d">shop conversations, 25 discovery interviews, 14 demos</div></div>
-      <div class="stat"><div class="n">30,000</div><div class="d">U.S. marine service businesses, repair shops to canvas shops</div></div>
-      <div class="stat"><div class="n">$39.5<small>B</small></div><div class="d">U.S. boat dealer and repair shop revenue a year (IBISWorld)</div></div>
+    <div class="next">
+      <div class="big">What's next</div>
+      <div class="small">Growth beyond Maryland in 2027</div>
+      <p><b>The plan.</b> A first hire, and taking the Annapolis in-person playbook to marine hubs beyond Maryland. Opsify is exploring angel investment and has not launched a round.</p>
+      <p><b>Looking for.</b> Intros to marine shops outside Maryland, and people who have sold software to small service businesses.</p>
     </div>
-  </section>
 
-  <section class="cols">
-    <div class="col">
-      <div class="lbl">Why now</div>
-      <p>Several shops in discovery said no software vendor had ever contacted them. Ten had dropped or resented a tool built for plumbers, auto shops or marinas. Many are booked 4 to 8 weeks out, growing, and spending 20 to 80 hours a week on admin.</p>
+    <div class="again">
+      <button class="btn btn-primary js-save" type="button" id="save-bottom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+        Save one-pager to Photos
+      </button>
+      <a class="btn btn-secondary" href="Opsify-One-Pager.pdf">Open the PDF</a>
     </div>
-    <div class="col">
-      <div class="lbl">The business</div>
-      <p>Monthly subscription per location, $100 to $300 a month by team size, QuickBooks included. Marine is the beachhead. Discovery found the same pain in landscaping, pool service and home repair, and a second vertical follows two marine case studies.</p>
-    </div>
-    <div class="col">
-      <div class="lbl">Team</div>
-      <p>John Gonsalves (founder and CEO) grew up around marine service and ran a marine detailing company in Annapolis for 4.5 years. Jesse Washburn (co-founder and CTO) brings years of production software engineering experience and has founded and exited a startup. TEDCO Pava LaPere Innovation Award recipient.</p>
-    </div>
-  </section>
-
-  <div class="next">
-    <div class="big">What's next</div>
-    <div class="small">Growth beyond Maryland in 2027</div>
-    <p><b>The plan.</b> A first hire, and taking the Annapolis in-person playbook to marine hubs beyond Maryland. Opsify is exploring angel investment and has not launched a round.</p>
-    <p><b>Looking for.</b> Intros to marine shops outside Maryland, and people who have sold software to small service businesses.</p>
   </div>
 
   <div class="contact">
-    <div class="name">John Gonsalves</div>
-    <div class="role">Founder and CEO, Opsify</div>
-    <ul>
-      <li><a href="mailto:john@opsifyapp.com">john@opsifyapp.com</a></li>
-      <li><a href="tel:+14108585185">410-858-5185</a></li>
-    </ul>
-    <div class="loc">Annapolis, Maryland &nbsp;&middot;&nbsp; <a href="https://opsifyapp.com">opsifyapp.com</a></div>
+    <div><b>John Gonsalves</b>, Founder and CEO</div>
+    <div class="links"><a href="mailto:john@opsifyapp.com">john@opsifyapp.com</a><a href="tel:+14108585185">410-858-5185</a></div>
+    <div style="margin-top:6px">Annapolis, Maryland &nbsp;&middot;&nbsp; <a href="https://opsifyapp.com">opsifyapp.com</a></div>
   </div>
 </div>
-</div>
-
-<div class="bar" id="bar">
-  <div class="inner">
-    <button class="btn btn-primary js-save" type="button" id="save-bar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
-      Save to Photos
-    </button>
-  </div>
 </div>
 
 <div class="viewer" id="viewer" hidden role="dialog" aria-label="Save the one-pager">
@@ -223,7 +212,7 @@ section{padding-top:26px}
   <div class="vfoot">
     <a class="btn btn-ghost" id="vdl" href="opsify-one-pager.png" download="Opsify-One-Pager.png" hidden>Download</a>
     <button class="btn btn-ghost" type="button" id="vshare" hidden>Share</button>
-    <button class="btn btn-primary" type="button" id="vclose">Read it</button>
+    <button class="btn btn-primary" type="button" id="vclose">Done</button>
   </div>
 </div>
 
@@ -233,8 +222,8 @@ section{padding-top:26px}
   var ua=navigator.userAgent||'';
   var isIOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   var isAndroid=/Android/i.test(ua);
-  var isPhone=isIOS||isAndroid||/Mobi/i.test(ua);
   var viewer=document.getElementById('viewer'),vhint=document.getElementById('vhint'),vdl=document.getElementById('vdl'),vshare=document.getElementById('vshare'),hint=document.getElementById('hint');
+  var more=document.getElementById('more'),moreBtn=document.getElementById('more-btn');
 
   if(isIOS){
     vhint.innerHTML='<b>Press and hold the image</b><span>, then tap <b>Add to Photos</b>.</span>';
@@ -262,13 +251,17 @@ section{padding-top:26px}
   }
 
   function open(){viewer.hidden=false;document.documentElement.classList.add('locked');}
-  function close(){viewer.hidden=true;document.documentElement.classList.remove('locked');if(location.hash==='#save'){try{history.replaceState(null,'',location.pathname)}catch(e){}}}
+  function close(){viewer.hidden=true;document.documentElement.classList.remove('locked');}
   Array.prototype.forEach.call(document.querySelectorAll('.js-save'),function(b){b.addEventListener('click',open)});
   document.getElementById('vclose').addEventListener('click',close);
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!viewer.hidden)close()});
 
-  /* On a phone, open the one-pager right away so the first thing people see is the sheet and how to save it. */
-  if(isPhone||location.hash==='#save'){open()}
+  moreBtn.addEventListener('click',function(){
+    more.hidden=false;moreBtn.hidden=true;
+    try{more.scrollIntoView({behavior:'smooth',block:'start'})}catch(e){}
+  });
+  if(location.hash==='#save'){open()}
+  if(location.hash==='#more'){more.hidden=false;moreBtn.hidden=true}
 })();
 </script>
 </body>
